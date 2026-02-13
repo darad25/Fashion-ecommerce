@@ -1,0 +1,124 @@
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { AuthError, AuthErrorCodes } from 'firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import FormInput from '../form-input/form-input.component';
+import Button from '../button/button.component';
+
+import { SignUpContainer } from './sign-up-form.styles';
+import { signUpStart, clearUserError } from '../../store/user/user.action';
+import { selectUserError, selectIsLoading, selectCurrentUser } from '../../store/user/user.selector';
+
+const defaultFormFields = {
+  displayName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
+
+const SignUpForm = () => {
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { displayName, email, password, confirmPassword } = formFields;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const error = useSelector(selectUserError);
+  const isLoading = useSelector(selectIsLoading);
+  const currentUser = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/');
+    }
+  }, [currentUser, navigate]);
+
+  useEffect(() => {
+    dispatch(clearUserError());
+    return () => {
+      dispatch(clearUserError());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      console.log('Sign Up Error:', error);
+      // @ts-ignore
+      const errorCode = error.code;
+      if (errorCode === 'auth/email-already-in-use') {
+        alert('Cannot create user, email already in use');
+      } else if (errorCode === 'auth/popup-closed-by-user') {
+        // Suppress
+      } else {
+        console.error('user creation encountered an error', error);
+      }
+    }
+  }, [error]);
+
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("passwords do not match");
+      return;
+    }
+
+    dispatch(signUpStart(email, password, displayName));
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
+  };
+
+  return (
+    <SignUpContainer>
+      <h2>Don't have an account ?</h2>
+      <span>Sign up with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          label="Display Name"
+          type="text"
+          required
+          onChange={handleChange}
+          name="displayName"
+          value={displayName}
+        />
+
+        <FormInput
+          label="Email"
+          type="email"
+          required
+          onChange={handleChange}
+          name="email"
+          value={email}
+        />
+
+        <FormInput
+          label="Password"
+          type="password"
+          required
+          onChange={handleChange}
+          name="password"
+          value={password}
+        />
+
+        <FormInput
+          label="Confirm Password"
+          type="password"
+          required
+          onChange={handleChange}
+          name="confirmPassword"
+          value={confirmPassword}
+        />
+        <Button isLoading={isLoading} type="submit">Sign Up</Button>
+      </form>
+    </SignUpContainer>
+  );
+};
+
+export default SignUpForm; 
