@@ -4,7 +4,8 @@ const subColor = 'rgba(255, 255, 255, 0.5)';
 const mainColor = '#ffffff';
 
 const shrinkLabelStyles = css`
-  top: -14px;
+  top: -21px;
+  left: 10px;
   font-size: 12px;
   color: ${mainColor};
 `;
