@@ -68,7 +68,8 @@ export const DirectoryItemContainer = styled.div`
   }
 
   @media screen and (max-width: 800px) {
-    height: 220px;
-    margin: 0 5px 15px;
+    width: 100%;
+    height: 200px;
+    margin: 0 0 15px;
   }
-`; 
+`;
