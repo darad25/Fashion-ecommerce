@@ -29,8 +29,10 @@ export const AuthenticationContainer = styled.div`
   margin: -20px -40px;
 
   @media screen and (max-width: 800px) {
-    margin: -10px;
-    padding: 20px 10px;
+    margin: 0;
+    padding: 24px 16px;
+    height: auto;
+    min-height: calc(100vh - 60px);
   }
 `;
 
@@ -48,7 +50,8 @@ export const AuthCard = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
 
   @media screen and (max-width: 500px) {
-    padding: 32px 24px;
+    padding: 32px 20px;
     border-radius: 18px;
+    margin: 0;
   }
 `;

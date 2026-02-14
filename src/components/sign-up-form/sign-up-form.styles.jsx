@@ -12,6 +12,10 @@ export const SignUpTitle = styled.h2`
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.5px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 24px;
+  }
 `;
 
 export const SignUpSubtitle = styled.span`
@@ -20,6 +24,10 @@ export const SignUpSubtitle = styled.span`
   font-size: 14px;
   color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.2px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 
 export const SignUpButtonContainer = styled.div`
